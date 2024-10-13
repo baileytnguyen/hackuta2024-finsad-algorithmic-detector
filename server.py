@@ -27,24 +27,35 @@ def detect_scam_in_comments(comments):
         # Check for keywords
         if any(keyword in comment_text.lower() for keyword in scam_keywords):
             print("Scam keyword detected.")  # Debug output
-            suspicion_score += 1  # Increment score for keyword presence
+            suspicion_score += 2  # Increment score for keyword presence
         
         # Check for full names using nameparser
         name = HumanName(comment_text)  # Parse the comment text as a name
-        if name.first and name.last:  # Check if a first and last name were detected
+        # Stricter full-name detection criteria
+        if (name.first and name.last 
+            and name.first.istitle() and name.last.istitle()  # Check for proper capitalization
+            and len(comment_text.split()) >= 2):  # Ensure the comment has at least two words
             print("Full name detected using nameparser.")  # Debug output
             suspicion_score += 5  # Boost score for name presence
 
+        # Check for three consecutive capitalized words
+        words = comment_text.split()
+        for i in range(len(words) - 2):
+            if words[i].istitle() and words[i+1].istitle() and words[i+2].istitle():
+                print("Three consecutive capitalized words detected.")  # Debug output
+                suspicion_score += 5  # Boost score for three capitalized words
+                break  # Exit after detecting the pattern
+        
         # Check for all uppercase words
         if any(word.isupper() for word in comment_text.split()):
             print("All caps detected.")  # Debug output
-            suspicion_score += 3  # Boost score for all caps
+            suspicion_score += 5  # Boost score for all caps
 
     # Determine if a scam is detected based on suspicion score
     is_scam = suspicion_score > 5  # Set threshold for scam detection
     confidence = suspicion_score / 10  # Confidence score as a fraction of maximum score
 
-    return is_scam, confidence  # Return scam detection result and confidence score
+    return is_scam, confidence * 100  # Return scam detection result and confidence score
 
 # Create the service class
 class ScamDetectionServiceServicer(comment_scam_detector_pb2_grpc.ScamDetectionServiceServicer):

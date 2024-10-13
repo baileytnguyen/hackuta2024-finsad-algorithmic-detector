@@ -14,7 +14,7 @@ def run():
         comment_scam_detector_pb2.Comment(
             user_id="1", 
             username="user1", 
-            comment_text="licensed", 
+            comment_text="People are scared of credit but honestly there is nothing scarey just make sure you are VERY respo", 
             timestamp=1632876000  # Example timestamp
         )
     ]
