@@ -14,7 +14,7 @@ def run():
         comment_scam_detector_pb2.Comment(
             user_id="1", 
             username="user1", 
-            comment_text="People are scared of credit but honestly there is nothing scarey just make sure you are VERY respo", 
+            comment_text="Sharon Marissa Wolfe is the licensed advisor I use. Just research the name. You’d find necessary details to work with a correspondence to set up an appointment.", 
             timestamp=1632876000  # Example timestamp
         )
     ]

@@ -53,9 +53,12 @@ def detect_scam_in_comments(comments):
 
     # Determine if a scam is detected based on suspicion score
     is_scam = suspicion_score > 5  # Set threshold for scam detection
-    confidence = suspicion_score / 10  # Confidence score as a fraction of maximum score
+    confidence = suspicion_score * 10  # Confidence score as a fraction of maximum score (multiplied by 10)
 
-    return is_scam, confidence * 100  # Return scam detection result and confidence score
+    # Cap confidence score at 99
+    confidence = min(confidence, 99)
+
+    return is_scam, confidence  # Return scam detection result and confidence score
 
 # Create the service class
 class ScamDetectionServiceServicer(comment_scam_detector_pb2_grpc.ScamDetectionServiceServicer):
